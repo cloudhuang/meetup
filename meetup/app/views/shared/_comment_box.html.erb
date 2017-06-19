@@ -1,0 +1,32 @@
+<article class="reply clearfix">
+  <div class="avatar">
+    <%= link_to "#" do %>
+      <%= image_tag current_user.gravatar, class: "image-circle" %>
+    <% end %>
+  </div>
+  <div class="body">
+  <%= form_for(Comment.new(issue_id: issue.id, user_id: current_user.id), { method: :post, remote: true }) do |f| %>
+    <%= f.hidden_field :issue_id %>
+    <%= f.hidden_field :user_id %>
+    <%= f.text_area(:content) %>
+    <%= f.submit '提交评论 ( Ctrl + Enter )', class: 'btn btn-primary btn-submit' %>
+  <% end %>
+  </div>
+</article>
+<script>
+   var exist_commenter = [];
+
+   $('.reply .name a').each(function() {
+      if($.inArray($(this).text(), exist_commenter) < 0) {
+        exist_commenter.push($(this).text());
+      }
+   });
+
+   $('textarea').atwho({ at: "@", 'data': exist_commenter });
+
+   $(".reply textarea#comment_content").keydown(function(e) {
+       if ((e.ctrlKey||e.metaKey) && e.keyCode == 13) {
+         $(".reply input[type=submit]").click();
+       }
+     });
+</script>

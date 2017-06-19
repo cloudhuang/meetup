@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Meetup</title>
+	<%= stylesheet_link_tag 'application', 'data-turbolinks-track' => true %>
+	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+	<%= csrf_meta_tags %>
+</head>
+<body class="<%= params[:controller] + '-' + params[:action] %>">
+	<div class="navbar clearfix">
+	  <div class="container">
+	    <%= link_to 'Meetup', root_path, {class: 'navbar-brand'} %>
+	    <ul class="nav left">
+	      <li><%= link_to t('navbar.about'), '/about' %></li>
+	    </ul>
+	    <ul class="nav right">
+	    	<% if current_user %>
+	    		<%= link_to current_user.username, '#' %>
+	    		<%= link_to 'Logout', logout_path, method: "delete" %>
+	    	<% else %>
+		    	<li><%= link_to t('navbar.login'), login_path %></li>
+		    	<li><%= link_to t('navbar.signup'), signup_path %></li>
+	    	<% end %>
+	    </ul>
+	  </div>
+	</div>
+
+	<% if flash[:notice] %>
+	<div class="notice">
+		<%= flash[:notice] %>
+	</div>
+	<% end %>
+
+	<div class="container">
+		<%= yield %>
+	</div>
+	<div class="footer">
+	  <div class="container">
+	    footer
+	  </div>
+	</div>
+	<script>
+	  $('.home-banner').anystretch();
+
+	  // 自动隐藏notice提示
+	  var hideNotice = function(){
+	      $(".notice").fadeOut("slow");
+	  }
+	  setTimeout(hideNotice, 4000);
+	</script>
+</body>
+</html>
